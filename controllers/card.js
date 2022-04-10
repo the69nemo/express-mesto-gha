@@ -15,15 +15,25 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  Card.create({ name, link, owner})
+  (!name || !link)
+  ? res.status(400).send({message: 'Данные не заполненны'})
+  : Card.create({ name, link, owner})
     .then((card) => res.send({ data: card }))
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      return (err.name === 'ValidationError')
+      ? res.status(400).send({message: 'Переданны некорректные данные'})
+      : res.status(500).send({message: 'Ошибка сервера'})
+    })
 };
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => res.send({ data: card }))
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      return (err.name === 'ValidationError')
+      ? res.status(400).send({message: 'Карта не найдена'})
+      : res.status(500).send({message: 'Ошибка сервера'})
+    })
 };
 
 module.exports.likeCard = (req, res) => {
@@ -33,7 +43,11 @@ module.exports.likeCard = (req, res) => {
     updateParams
   )
     .then((card) => res.send({ data: card }))
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      return (err.name === 'ValidationError')
+      ? res.status(400).send({message: 'Переданны некорректные данные'})
+      : res.status(500).send({message: 'Ошибка сервера'})
+    })
 };
 
 module.exports.dislikeCard = (req, res) => {
@@ -43,5 +57,9 @@ module.exports.dislikeCard = (req, res) => {
     updateParams
   )
     .then((card) => res.send({ data: card }))
-    .catch((err) => console.log(err))
+    .catch((err) => {
+      return (err.name === 'ValidationError')
+      ? res.status(400).send({message: 'Переданны некорректные данные'})
+      : res.status(500).send({message: 'Ошибка сервера'})
+    })
 };
