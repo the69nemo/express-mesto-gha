@@ -1,18 +1,12 @@
-[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto фронтенд + бэкенд
+[![Tests](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/the69nemo/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
+# Проект Mesto бэкенд
 
+*Выполнил: Мицук Сергей*
 
-
-## Настройка бейджей статуса тестов
-Перед началом работы над проектом рекомендуется исправить бейджи, отражающие статус прохождения тестов.
-Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `${имя_пользователя}` и `${имя_репозитория}` соответствующие значения.
-
-```
-[![Tests for sprint 13](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml) 
-
-[![Tests for sprint 14](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml)
-```
-
+Учебный проект студента веб-факультета *Яндекс.Практикума*, представляющий из себя бэкенд часть учебного проекта *Mesto*. Использованые технологии:
+1. Node.js
+2. Express
+3. MongoDB
 
 ## Директории
 
