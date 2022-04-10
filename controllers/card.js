@@ -15,7 +15,7 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  !name || !link
+  (!name || !link)
     ? res.status(400).send({ message: "Данные не заполненны" })
     : Card.create({ name, link, owner })
         .then((card) => res.send({ data: card }))
@@ -44,7 +44,7 @@ module.exports.likeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
-    updateParams
+    { new: true }
   )
     .then((card) => {
       return (!card)
@@ -62,7 +62,7 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    updateParams
+    { new: true }
   )
     .then((card) => {
       return (!card)
