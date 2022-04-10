@@ -29,8 +29,8 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .then((card) => {
-      return !card
-        ? res.status(404).send({ message: "Карта ненайдена" })
+      return (!card)
+        ? res.status(404).send({ message: "Карта не найдена" })
         : res.send({ data: card });
     })
     .catch((err) => {
@@ -47,8 +47,8 @@ module.exports.likeCard = (req, res) => {
     updateParams
   )
     .then((card) => {
-      return !card
-        ? res.status(404).send({ message: "Карта ненайдена" })
+      return (!card)
+        ? res.status(404).send({ message: "Карта не найдена" })
         : res.send({ data: card });
     })
     .catch((err) => {
@@ -65,8 +65,8 @@ module.exports.dislikeCard = (req, res) => {
     updateParams
   )
     .then((card) => {
-      return !card
-        ? res.status(404).send({ message: "Карта ненайдена" })
+      return (!card)
+        ? res.status(404).send({ message: "Карта не найдена" })
         : res.send({ data: card });
     })
     .catch((err) => {
