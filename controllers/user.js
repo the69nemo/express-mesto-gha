@@ -15,12 +15,12 @@ module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
   .then((user) => {
     return (!user)
-    ? res.status(400).send({ message: 'Пользователь не найден' })
+    ? res.status(404).send({ message: 'Пользователь не найден' })
     : res.send({ data: user })
   })
 
     .catch((err) => {
-      return (err.name === 'ValidationError')
+      return (err.name === 'CastError')
       ? res.status(400).send({message: 'Переданны некорректные данные для поиска'})
       : res.status(500).send({message: 'Ошибка сервера'})
     })
