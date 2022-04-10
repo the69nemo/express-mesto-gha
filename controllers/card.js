@@ -1,39 +1,43 @@
-const Card = require('../models/card');
+const Card = require("../models/card");
 const updateParams = {
   new: true,
   runValidators: true,
-  upsert: true
+  upsert: true,
 };
 
 module.exports.getAllCards = (req, res) => {
   Card.find({})
     .then((card) => res.send({ data: card }))
-    .catch((err) => console.log(err))
+    .catch((err) => console.log(err));
 };
 
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  (!name || !link)
-  ? res.status(400).send({message: 'Данные не заполненны'})
-  : Card.create({ name, link, owner})
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      return (err.name === 'ValidationError')
-      ? res.status(400).send({message: 'Переданны некорректные данные'})
-      : res.status(500).send({message: 'Ошибка сервера'})
-    })
+  !name || !link
+    ? res.status(400).send({ message: "Данные не заполненны" })
+    : Card.create({ name, link, owner })
+        .then((card) => res.send({ data: card }))
+        .catch((err) => {
+          return err.name === "ValidationError"
+            ? res.status(400).send({ message: "Переданны некорректные данные" })
+            : res.status(500).send({ message: "Ошибка сервера" });
+        });
 };
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      return (err.name === 'ValidationError')
-      ? res.status(400).send({message: 'Карта не найдена'})
-      : res.status(500).send({message: 'Ошибка сервера'})
+    .then((card) => {
+      return !card
+        ? res.status(404).send({ message: "Карта ненайдена" })
+        : res.send({ data: card });
     })
+    .catch((err) => {
+      return err.name === "CastError"
+        ? res.status(400).send({ message: "Переданны некорректные данные" })
+        : res.status(500).send({ message: "Ошибка сервера" });
+    });
 };
 
 module.exports.likeCard = (req, res) => {
@@ -42,12 +46,16 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } },
     updateParams
   )
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      return (err.name === 'ValidationError')
-      ? res.status(400).send({message: 'Переданны некорректные данные'})
-      : res.status(500).send({message: 'Ошибка сервера'})
+    .then((card) => {
+      return !card
+        ? res.status(404).send({ message: "Карта ненайдена" })
+        : res.send({ data: card });
     })
+    .catch((err) => {
+      return err.name === "CastError"
+        ? res.status(400).send({ message: "Переданны некорректные данные" })
+        : res.status(500).send({ message: "Ошибка сервера" });
+    });
 };
 
 module.exports.dislikeCard = (req, res) => {
@@ -56,10 +64,14 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } },
     updateParams
   )
-    .then((card) => res.send({ data: card }))
-    .catch((err) => {
-      return (err.name === 'ValidationError')
-      ? res.status(400).send({message: 'Переданны некорректные данные'})
-      : res.status(500).send({message: 'Ошибка сервера'})
+    .then((card) => {
+      return !card
+        ? res.status(404).send({ message: "Карта ненайдена" })
+        : res.send({ data: card });
     })
+    .catch((err) => {
+      return err.name === "CastError"
+        ? res.status(400).send({ message: "Переданны некорректные данные" })
+        : res.status(500).send({ message: "Ошибка сервера" });
+    });
 };
