@@ -1,5 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { celebrate, errors, Joi } = require('celebrate');
+const { login, createNewUser } = require('./controllers/user');
+const auth = require('./middlewares/auth');
+const handleError = require('./middlewares/handleError');
+const NotFoundErr = require('./errors/NotFoundErr');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -11,21 +16,35 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   console.log('**********Подключено к Базе**********');
 });
 
-// временная авторизация
-app.use((req, res, next) => {
-  req.user = {
-    _id: '6252baba9668039904da0029',
-  };
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().required().regex(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
 
-  next();
-});
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createNewUser);
+
+app.use(auth);
 
 app.use('/users', require('./routes/user'));
 
 app.use('/cards', require('./routes/card'));
 
-app.use((req, res) => {
-  res.status(404).send({ message: 'Запрашиваемая страница отсутсвует' });
+app.use((req, res, next) => {
+  next(new NotFoundErr('Запрашиемый ресур не найден'));
 });
+
+app.use(errors());
+
+app.use(handleError);
 
 app.listen(PORT);
