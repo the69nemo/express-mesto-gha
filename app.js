@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const { celebrate, errors, Joi } = require('celebrate');
 const { login, createNewUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
@@ -8,8 +9,8 @@ const NotFoundErr = require('./errors/NotFoundErr');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   // eslint-disable-next-line no-console

@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const validator = require('validator');
+// const validator = require('validator');
+const isUrl = require('validator/lib/isURL');
+const isEmail = require('validator/lib/isEmail');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(link) {
-        return validator.isUrl(link);
+        return isUrl(link);
       },
       message: 'Неверный формат ссылки',
     },
@@ -31,7 +33,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator(email) {
-        return validator.isEmail(email);
+        return isEmail(email);
       },
       message: 'Неверный формат электронной электронной почты',
     },
