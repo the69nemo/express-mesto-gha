@@ -17,22 +17,22 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   console.log('**********Подключено к Базе**********');
 });
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/),
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), createNewUser);
-
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
 }), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().pattern(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), createNewUser);
 
 app.use(auth);
 
@@ -46,6 +46,6 @@ app.use((req, res, next) => {
 
 app.use(errors());
 
-app.use(({ req, res, next }) => handleError({ req, res, next }));
+app.use(handleError);
 
 app.listen(PORT);
