@@ -29,7 +29,9 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-      if (String(card.owner) === req.user._id) {
+      if (!card) {
+        next(new NotFoundErr('Карта не найдена'));
+      } else if (String(card.owner) === req.user._id) {
         Card.findByIdAndRemove(req.params.cardId)
           .then(() => res.send({ message: 'Карта успешно удалена' }))
           .catch(() => next(new NotFoundErr('Карта не найдена')));
