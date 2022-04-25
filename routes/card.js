@@ -14,13 +14,13 @@ router.get('/', getAllCards);
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().pattern(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
+    link: Joi.string().required().pattern(/^(https?:\/\/)?([\da-z.-]+).([a-z.]{2,6})([/\w.-]*)*\/?$/),
   }),
 }), createCard);
 
 router.delete('/:cardId', celebrate({
   body: Joi.object().keys({
-    cardId: Joi.string().length(24),
+    cardId: Joi.string().hex().length(24),
   }),
 }), deleteCard);
 
