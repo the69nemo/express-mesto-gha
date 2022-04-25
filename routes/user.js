@@ -10,7 +10,6 @@ const {
 } = require('../controllers/user');
 
 router.get('/', getAllUsers);
-
 router.get('/me', getCurrentUser);
 
 router.get('/:userId', celebrate({
