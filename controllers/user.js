@@ -62,8 +62,8 @@ module.exports.createNewUser = (req, res, next) => {
   } = req.body;
 
   User.find({ email })
-    .then((user) => {
-      if (!user) {
+    .then((result) => {
+      if (result.length === 0) {
         bcrypt.hash(password, 10)
           // eslint-disable-next-line arrow-body-style
           .then((hash) => {
