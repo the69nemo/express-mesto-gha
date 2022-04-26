@@ -12,7 +12,6 @@ const {
 const updateParams = {
   new: true,
   runValidators: true,
-  upsert: true,
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
@@ -63,11 +62,12 @@ module.exports.createNewUser = (req, res, next) => {
   } = req.body;
 
   User.find({ email })
-    .then((result) => {
-      if (result.length === 0) {
+    .then((user) => {
+      if (!user) {
         bcrypt.hash(password, 10)
+          // eslint-disable-next-line arrow-body-style
           .then((hash) => {
-            User.create({
+            return User.create({
               name, about, avatar, email, password: hash,
             });
           })
@@ -101,10 +101,7 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    {
-      new: true,
-      runValidators: true,
-    },
+    updateParams,
   )
     .then((user) => {
       if (!user) {
