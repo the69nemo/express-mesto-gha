@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, errors, Joi } = require('celebrate');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { login, createNewUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
 const handleError = require('./middlewares/handleError');
@@ -16,6 +17,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   // eslint-disable-next-line no-console
   console.log('**********Подключено к Базе**********');
 });
+
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -43,6 +46,8 @@ app.use('/cards', require('./routes/card'));
 app.use((req, res, next) => {
   next(new NotFoundErr('Запрашиемый ресур не найден'));
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 
