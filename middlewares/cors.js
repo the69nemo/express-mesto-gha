@@ -1,7 +1,7 @@
 const allowedCors = [
   'https://front.proekt.nomoredomains.work',
   'http://front.proekt.nomoredomains.work',
-  'localhost:3000',
+  'http://localhost:3000',
 ];
 
 // eslint-disable-next-line consistent-return
