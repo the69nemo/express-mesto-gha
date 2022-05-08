@@ -20,7 +20,7 @@ module.exports.getCurrentUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь не найден');
       } else {
-        res.send({ data: user });
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -34,7 +34,7 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 module.exports.getAllUsers = (req, res, next) => {
   User.find({})
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send(user))
     .catch((err) => next(err));
 };
 
@@ -44,7 +44,7 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) {
         throw new NotFoundErr('Пользователь не найден');
       } else {
-        res.send({ data: user });
+        res.send(user);
       }
     })
     .catch((err) => {
@@ -71,14 +71,13 @@ module.exports.createNewUser = (req, res, next) => {
               name, about, avatar, email, password: hash,
             });
           })
-          .then(() => {
+          .then((user) => {
             res.status(200).send({
-              data: {
-                name,
-                about,
-                avatar,
-                email,
-              },
+              name: user.name,
+              about: user.about,
+              avatar: user.avatar,
+              email: user.email,
+              _id: user._id,
             });
           })
           .catch((err) => {
