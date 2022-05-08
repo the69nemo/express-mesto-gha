@@ -9,6 +9,8 @@ const {
   NotRepetitionErr,
 } = require('../errors');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const updateParams = {
   new: true,
   runValidators: true,
@@ -149,7 +151,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'super-puper-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
       res.send({ token });

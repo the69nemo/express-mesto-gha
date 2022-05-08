@@ -7,6 +7,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { login, createNewUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
 
+require('dotenv').config();
+
 const handleError = require('./middlewares/handleError');
 const NotFoundErr = require('./errors/NotFoundErr');
 
